@@ -732,9 +732,9 @@ int main() {
     Tree* pizzaHutTree= new Tree();
 
     cout << "Welcome to the" << endl;
-    cout << "╔===============================╗" << endl;
-    cout << "╟ The Ultimate Road Trip Guide! ╢" << endl;
-    cout << "╚===============================╝" << endl;
+    cout << "===============================" << endl;
+    cout << " The Ultimate Road Trip Guide! " << endl;
+    cout << "===============================" << endl;
     cout << "Please enter your coordinates." << endl;
     cout << "Latitude: ";
     cin >> latitude;
