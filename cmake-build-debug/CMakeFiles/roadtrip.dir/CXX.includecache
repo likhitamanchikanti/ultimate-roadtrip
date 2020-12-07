@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/likhitamanchikanti/CLionProjects/roadtrip/main.cpp
+iomanip
+-
+iostream
+-
+fstream
+-
+string
+-
+vector
+-
+unordered_map
+-
+map
+-
+chrono
+-
+stack
+-
+sstream
+-
+
