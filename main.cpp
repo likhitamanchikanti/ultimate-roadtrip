@@ -2,8 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
-#include <unordered_map>
 #include <map>
 #include <chrono>
 #include <stack>
@@ -32,6 +30,9 @@ public:
 
 Node* Tree::insert(Node* node, float key, Node* tempNode)
 {
+    // code from one of Rithika's Stepik solutions:
+    // link: https://stepik.org/submissions/1480362/294404350?unit=379727
+
     if (node == nullptr)
         node = tempNode;
 
@@ -44,12 +45,12 @@ Node* Tree::insert(Node* node, float key, Node* tempNode)
     return node;
 }
 
-
 void loadSubway(map<float, pair<float, string>> &m, Tree* tree){
 
     ifstream file("data/Subway_US.csv");
     string lineFromFile;
 
+    // reading each line and storing the latitude longitude and address values
     while(!file.eof()){
 
         Node* tempNode = new Node();
@@ -87,6 +88,7 @@ void loadBP(map<float, pair<float, string>> &m, Tree* tree){
     ifstream file("data/BP Stations_USA.csv");
     string lineFromFile;
 
+    // reading each line and storing the latitude longitude and address values
     while(!file.eof()){
 
         Node* tempNode = new Node();
@@ -124,6 +126,7 @@ void loadsevenEleven(map<float, pair<float, string>> &m, Tree* tree){
     ifstream file("data/Seven Eleven-US.csv");
     string lineFromFile;
 
+    // reading each line and storing the latitude longitude and address values
     while(!file.eof()){
 
         Node* tempNode = new Node();
@@ -161,6 +164,7 @@ void loadchaseBank(map<float, pair<float, string>> &m, Tree* tree){
     ifstream file("data/Chase_Bank_Branches _ ATM,s.csv");
     string lineFromFile;
 
+    // reading each line and storing the latitude longitude and address values
     while(!file.eof()){
 
         Node* tempNode = new Node();
@@ -214,6 +218,7 @@ void loadDominoses(map<float, pair<float, string>>& m, Tree* tree)
 
     if (file.is_open())
     {
+        // reading each line and storing the latitude longitude and address values
         while(getline(file, line))
         {
             Node* tempNode = new Node();
@@ -267,6 +272,7 @@ void loadDunkins(map<float, pair<float, string>>& m, Tree* tree)
 
     if (file.is_open())
     {
+        // reading each line and storing the latitude longitude and address values
         while(getline(file, line))
         {
             Node* tempNode = new Node();
@@ -315,6 +321,7 @@ void loadPNCBanks(map<float, pair<float, string>>& m, Tree* tree)
 
     if (file.is_open())
     {
+        // reading each line and storing the latitude longitude and address values
         while(getline(file, line))
         {
             Node* tempNode = new Node();
@@ -368,6 +375,7 @@ void loadRestAreas(map<float, pair<float, string>>& m, Tree* tree)
 
     if (file.is_open())
     {
+        // reading each line and storing the latitude longitude and address values
         while(getline(file, line))
         {
             Node* tempNode = new Node();
@@ -424,6 +432,7 @@ void loadStarbuckses(map<float, pair<float, string>>& m, Tree* tree)
 
     if (file.is_open())
     {
+        // reading each line and storing the latitude longitude and address values
         while(getline(file, line))
         {
             Node* tempNode = new Node();
@@ -474,6 +483,7 @@ void loadWendys(map<float, pair<float, string>>& m, Tree* tree){
     ifstream myfile("data/wendys.csv");
     string linefromfile;
 
+    // reading each line and storing the latitude longitude and address values
     while(!myfile.eof()){
 
         Node* tempNode = new Node();
@@ -509,6 +519,7 @@ void loadburgerKing(map<float, pair<float, string>>& m, Tree* tree){
     ifstream myfile("data/burgerking.csv");
     string linefromfile;
 
+    // reading each line and storing the latitude longitude and address values
     while(!myfile.eof()){
         Node* tempNode = new Node();
 
@@ -542,6 +553,7 @@ void loadmcDonalds(map<float, pair<float, string>>& m, Tree* tree){
     ifstream myfile("data/mcdonalds.csv");
     string linefromfile;
 
+    // reading each line and storing the latitude longitude and address values
     while(!myfile.eof()){
 
         Node* tempNode = new Node();
@@ -575,6 +587,7 @@ void loadpizzaHut(map<float, pair<float, string>>& m, Tree* tree){
     ifstream myfile("data/pizzahut.csv");
     string linefromfile;
 
+    // reading each line and storing the latitude longitude and address values
     while(!myfile.eof()){
 
         Node* tempNode = new Node();
@@ -610,29 +623,40 @@ void loadpizzaHut(map<float, pair<float, string>>& m, Tree* tree){
 
 string findNearestMap(const map<float, pair<float, string>> &m, float latitude, float longitude)
 {
+    // we want the latitude and longitude we find to be within 0.5 of the user's
     const float indivThreshold = 0.5;
     const float userLatLongSum = abs(latitude) + abs(longitude);
 
+    // variable initialization
     string closestaddress = m.begin()->second.second;
     float currLatLongSum = abs(m.begin()->first) + abs(m.begin()->second.first);
     float combinedThreshold = abs(currLatLongSum - userLatLongSum);
 
     for (auto it = m.begin(); it != m.end(); ++it)
     {
+        // finding the difference between the map's current lat. and long.
+        // and the user's latitude and longitude
         float latdifference = abs(abs(it->first) - abs(latitude));
         float longdifference = abs(abs(it->second.first) - abs(longitude));
 
+        // we keep searching through the map if we aren't within 0.5
         if (latdifference > indivThreshold && longdifference > indivThreshold)
             continue;
 
-        else 	// both lat and long are within 1.0
+        // in the event that both the map lat. and map long. are within 1.0
+        else
         {
             float temp = abs(it->first) + abs(it->second.first);
 
+            // an additional check (making sure the difference between
+            // the users lat and long and the difference between the map's lat
+            // and long are close)
             if (abs(temp - userLatLongSum) < combinedThreshold)
             {
                 combinedThreshold = abs(temp - currLatLongSum);
                 currLatLongSum = temp;
+
+                // we set the current address as the closest address
                 closestaddress = it->second.second;
             }
 
@@ -646,15 +670,20 @@ string findNearestMap(const map<float, pair<float, string>> &m, float latitude, 
 
 void findNearestTree(const float &indivThreshold, const float &userLatLongSum, string &closestaddress, float &currLatLongSum, float &combinedThreshold, Node* root, float latitude, float longitude){
 
-    // code from Aditi's Stepik exercises
-    if(root == NULL)
+    // code for traversal comes from Aditi's AVL project submission
+    if(root == nullptr)
         return;
 
-    if(root != NULL){
+    if(root != nullptr){
 
-        findNearestTree(indivThreshold, userLatLongSum, closestaddress, currLatLongSum, combinedThreshold, root->left, latitude, longitude); //goes to left
-        findNearestTree(indivThreshold, userLatLongSum, closestaddress, currLatLongSum, combinedThreshold, root->right, latitude, longitude); //goes to right
+        // checks the left branch
+        findNearestTree(indivThreshold, userLatLongSum, closestaddress, currLatLongSum, combinedThreshold, root->left, latitude, longitude);
 
+        // checks the right branch
+        findNearestTree(indivThreshold, userLatLongSum, closestaddress, currLatLongSum, combinedThreshold, root->right, latitude, longitude);
+
+        // finding the difference between the map's current lat. and long.
+        // and the user's latitude and longitude
         float latdifference = abs(abs(root->latitude) - abs(latitude));
         float longdifference = abs(abs(root->longitude) - abs(longitude));
 
@@ -662,14 +691,20 @@ void findNearestTree(const float &indivThreshold, const float &userLatLongSum, s
 
         }
 
-        else 	// both lat and long are within 1.0
+        // if both lat and long are within 1.0
+        else
         {
             float temp = abs(root->latitude) + abs(root->longitude);
 
+            // an additional check (making sure the difference between
+            // the users lat and long and the difference between the map's lat
+            // and long are close)
             if (abs(temp - userLatLongSum) < combinedThreshold)
             {
                 combinedThreshold = abs(temp - currLatLongSum);
                 currLatLongSum = temp;
+
+                // we set the current address as the closest address
                 closestaddress = root->address;
             }
 
@@ -689,6 +724,7 @@ int main() {
     string treeAddress;
     map<int, string> places;
 
+    // this map helps us keep track of the 13 chains
     places.insert({1, "Dominos"});
     places.insert({2, "Dunkin Donuts"});
     places.insert({3, "PNC Bank"});
@@ -703,6 +739,7 @@ int main() {
     places.insert({12, "McDonald's"});
     places.insert({13, "Pizza Hut"});
 
+    // we create a map for each chain
     map<float, pair<float, string>> dominosMap;
     map<float, pair<float, string>> dunkinMap;
     map<float, pair<float, string>> pncMap;
@@ -717,6 +754,7 @@ int main() {
     map<float, pair<float, string>> mcDonaldsMap;
     map<float, pair<float, string>> pizzaHutMap;
 
+    // we create a tree for each chain
     Tree* dominosTree = new Tree();
     Tree* dunkinTree = new Tree();
     Tree* pncTree = new Tree();
@@ -760,7 +798,7 @@ int main() {
 
     cout << "\nFinding nearest " << places.at(option) << "..." << endl;
 
-    //code for timing functions taken from https://www.techiedelight.com/measure-elapsed-time-program-chrono-library/
+    // code for timing functions taken from https://www.techiedelight.com/measure-elapsed-time-program-chrono-library/
     auto start1 = chrono::steady_clock::now();
     auto end1 = chrono::steady_clock::now();
     auto duration1 = chrono::duration_cast<chrono::milliseconds>( end1 - start1 ).count();
@@ -768,9 +806,11 @@ int main() {
     auto end2 = chrono::steady_clock::now();
     auto duration2 = chrono::duration_cast<chrono::milliseconds>( end2 - start2 ).count();
 
+    // we want the latitude and longitude we find to be within 0.5 of the user's
     const float indivThreshold = 0.5;
     const float userLatLongSum = abs(latitude) + abs(longitude);
 
+    // dominos
     if (option == 1){
         loadDominoses(dominosMap, dominosTree);
 
@@ -790,6 +830,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // dunkin donuts
     else if (option == 2){
         loadDunkins(dunkinMap, dunkinTree);
 
@@ -809,6 +850,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // pnc bank
     else if (option == 3){
         loadPNCBanks(pncMap, pncTree);
 
@@ -828,6 +870,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // rest areas
     else if (option == 4){
         loadRestAreas(restareaMap, restareaTree);
 
@@ -847,6 +890,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // starbucks
     else if (option == 5){
         loadStarbuckses(starbucksMap, starbucksTree);
 
@@ -866,6 +910,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // subway
     else if (option == 6){
         loadSubway(subwayMap, subwayTree);
 
@@ -885,6 +930,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // bp gas
     else if (option == 7){
         loadBP(bpMap, bpTree);
 
@@ -904,6 +950,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // 7-11
     else if (option == 8){
         loadsevenEleven(sevenElevenMap, sevenElevenTree);
 
@@ -923,6 +970,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // chase bank
     else if (option == 9){
         loadchaseBank(chasebankMap, chasebankTree);
 
@@ -942,6 +990,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // wendys
     else if (option == 10 ){
         loadWendys(wendysMap, wendysTree);
 
@@ -961,6 +1010,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // burger king
     else if (option == 11){
         loadburgerKing(burgerKingMap, burgerKingTree);
 
@@ -980,6 +1030,7 @@ int main() {
         duration2 = chrono::duration_cast<chrono::microseconds>( end2 - start2 ).count();
     }
 
+    // mcdonalds
     else if (option == 12){
         loadmcDonalds(mcDonaldsMap, mcDonaldsTree);
 
@@ -1000,6 +1051,7 @@ int main() {
 
     }
 
+    // pizza hut
     else if (option == 13){
         loadpizzaHut(pizzaHutMap, pizzaHutTree);
 
