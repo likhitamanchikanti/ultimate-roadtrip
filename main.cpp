@@ -158,7 +158,7 @@ void loadsevenEleven(map<float, pair<float, string>> &m, Tree* tree){
 
 void loadchaseBank(map<float, pair<float, string>> &m, Tree* tree){
 
-    ifstream file("data/Chase_Bank_Branches & ATM,s.csv");
+    ifstream file("data/Chase_Bank_Branches _ ATM,s.csv");
     string lineFromFile;
 
     while(!file.eof()){
@@ -750,7 +750,7 @@ int main() {
     cout << "6. Subway" << endl;
     cout << "7. BP" << endl;
     cout << "8. 7-Eleven" << endl;
-    cout << "9. ChaseBank" << endl;
+    cout << "9. Chase Bank" << endl;
     cout << "10. Wendy\'s" << endl;
     cout << "11. Burger King" << endl;
     cout << "12. McDonald\'s" << endl;
